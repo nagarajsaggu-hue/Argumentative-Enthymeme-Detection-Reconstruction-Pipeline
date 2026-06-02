@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="edr.png" alt="Project Repository Banner" width="100%">
+</p>
+
+<br>
 #!/bin/bash
 #SBATCH --job-name=mtg_eval_gap
 #SBATCH --output=logs/mtg_eval_gap_%j.out
