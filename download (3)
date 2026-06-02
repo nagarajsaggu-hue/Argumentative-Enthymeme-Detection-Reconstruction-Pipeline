@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_step3a_natural
+#SBATCH --output=logs/mtg_step3a_%j.out
+#SBATCH --error=logs/mtg_step3a_%j.err
+#SBATCH --time=02:00:00
+#SBATCH --mem=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gammaweb
+#SBATCH --gres=gpu:1
+
+echo "=========================================="
+echo "MIND THE GAP - STEP 3a: Naturalness Filter"
+echo "Started: $(date)"
+echo "Job ID: $SLURM_JOB_ID"
+echo "=========================================="
+
+cd $HOME/argsme-project
+
+mkdir -p logs
+
+/mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv/bin/python3 scripts/mtg_step3a_naturalness.py
+
+exit_code=$?
+echo "=========================================="
+echo "Completed: $(date)"
+echo "Exit code: $exit_code"
+echo "=========================================="
+
+exit $exit_code

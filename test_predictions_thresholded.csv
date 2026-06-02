@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_step5_final
+#SBATCH --output=logs/mtg_step5_final_%j.out
+#SBATCH --error=logs/mtg_step5_final_%j.err
+#SBATCH --time=01:30:00
+#SBATCH --mem=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gammaweb
+
+echo "Starting Final Detection Instance Generation: $(date)"
+cd /mnt/ceph/storage/data-tmp/2026/zuyi6708/argsme-project
+
+/mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/python3 scripts/mtg_step5_detection_instances.py
+
+echo "Finished: $(date)"

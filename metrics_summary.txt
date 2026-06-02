@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_deberta_train
+#SBATCH --output=logs/mtg_step6_%j.out
+#SBATCH --error=logs/mtg_step6_%j.err
+#SBATCH --time=08:00:00
+#SBATCH --partition=gammaweb
+#SBATCH --gres=gpu:1
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=4
+
+cd /mnt/ceph/storage/data-tmp/2026/zuyi6708/argsme-project
+source /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/activate
+
+python3 scripts/train_deberta_detection_threshold.py

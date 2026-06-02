@@ -1,0 +1,28 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_step2_filter
+#SBATCH --output=logs/mtg_step2_%j.out
+#SBATCH --error=logs/mtg_step2_%j.err
+#SBATCH --time=00:15:00
+#SBATCH --mem=8G
+#SBATCH --cpus-per-task=2
+#SBATCH --partition=gammaweb
+
+echo "=========================================="
+echo "MIND THE GAP - STEP 2: Filter 4+ Sentences"
+echo "Started: $(date)"
+echo "Job ID: $SLURM_JOB_ID"
+echo "=========================================="
+
+cd $HOME/argsme-project
+
+mkdir -p logs
+
+/mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv/bin/python3 scripts/mtg_step2_filter_length.py
+
+exit_code=$?
+echo "=========================================="
+echo "Completed: $(date)"
+echo "Exit code: $exit_code"
+echo "=========================================="
+
+exit $exit_code

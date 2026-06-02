@@ -1,0 +1,30 @@
+import pandas as pd
+from pathlib import Path
+
+ROOT = Path("/mnt/ceph/storage/data-tmp/current/zuyi6708/argsme-project")
+INPUT  = ROOT / "data/processed/mtg_step3_naturalness_filtered.csv"
+OUTPUT = ROOT / "data/processed/mtg_step3_naturalness_filtered.csv"
+
+print("Loading step3 output...")
+df = pd.read_csv(INPUT)
+print(f"  Rows: {len(df):,}  |  Unique para_ids before: {df['para_id'].nunique():,}")
+
+new_para_ids = []
+sub_para_counter = {}
+
+for i, row in df.iterrows():
+    file_id = row['para_id']
+    if row['sent_idx'] == 0:
+        if file_id not in sub_para_counter:
+            sub_para_counter[file_id] = 0
+        else:
+            sub_para_counter[file_id] += 1
+    count = sub_para_counter.get(file_id, 0)
+    new_para_ids.append(f"{file_id}_{count}")
+
+df['para_id'] = new_para_ids
+print(f"  Unique para_ids after:  {df['para_id'].nunique():,}")
+
+df.to_csv(OUTPUT, index=False)
+print(f"\n Fixed step3 saved to {OUTPUT}")
+print("Next: re-run step4a -> step5 -> step6 -> step7")

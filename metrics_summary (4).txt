@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_rank_exact
+#SBATCH --output=logs/mtg_step4b_%j.out
+#SBATCH --error=logs/mtg_step4b_%j.err
+#SBATCH --time=04:00:00
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gammaweb
+#SBATCH --gres=gpu:1
+
+echo "Started: $(date)"
+cd /mnt/ceph/storage/data-tmp/2026/zuyi6708/argsme-project
+
+/mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/python3 scripts/mtg_step4b_ranking.py
+
+echo "Completed: $(date)"

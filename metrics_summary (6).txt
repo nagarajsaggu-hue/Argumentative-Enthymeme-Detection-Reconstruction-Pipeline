@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=train_adu_bert
+#SBATCH --output=logs/train_adu_bert_%j.out
+#SBATCH --error=logs/train_adu_bert_%j.err
+#SBATCH --time=02:00:00
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=4
+#SBATCH --gres=gpu:1
+#SBATCH --partition=gammaweb
+
+cd /mnt/ceph/storage/data-tmp/2026/zuyi6708/argsme-project
+mkdir -p logs
+
+PYTHON=/mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/python3
+$PYTHON scripts/train_adu_classifier.py

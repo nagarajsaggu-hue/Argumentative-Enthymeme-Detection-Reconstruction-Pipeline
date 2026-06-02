@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --job-name=mtg_recon_instances
+#SBATCH --output=logs/mtg_step5_reconstruction_%j.out
+#SBATCH --error=logs/mtg_step5_reconstruction_%j.err
+#SBATCH --time=02:00:00
+#SBATCH --mem=16G
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gammaweb
+
+echo "============================================================"
+echo "MIND THE GAP - STEP 5: RECONSTRUCTION INSTANCES"
+echo "Started: $(date)"
+echo "Node   : $(hostname)"
+echo "Job ID : ${SLURM_JOB_ID}"
+echo "============================================================"
+
+cd /mnt/ceph/storage/data-tmp/2026/zuyi6708/argsme-project
+
+source /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/activate
+
+python3 scripts/mtg_step5_reconstruction_instances.py
+
+echo "============================================================"
+echo "Completed: $(date)"
+echo "============================================================"

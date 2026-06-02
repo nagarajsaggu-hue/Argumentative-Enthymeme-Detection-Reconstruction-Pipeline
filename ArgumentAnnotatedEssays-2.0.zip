@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=perm_env_2026
+#SBATCH --output=logs/perm_env_2026.out
+#SBATCH --mem=32G
+#SBATCH --partition=gammaweb
+#SBATCH --time=00:30:00
+
+# Step A: Create a fresh, unlinked 2026 directory
+mkdir -p /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026
+
+# Step B: Build the environment using the compute node's full Python
+python3 -m venv /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026
+
+# Step C: Activate and Install everything for the WHOLE project
+source /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026/bin/activate
+
+pip install --upgrade pip
+pip install torch transformers sentence-transformers pandas spacy networkx scikit-learn tqdm
+python -m spacy download en_core_web_sm
+
+echo "------------------------------------------------"
+echo "PERMANENT 2026 ENVIRONMENT READY"
+echo "Location: /mnt/ceph/storage/data-tmp/2026/zuyi6708/enthymeme_detection/venv_final_2026"
+echo "------------------------------------------------"
