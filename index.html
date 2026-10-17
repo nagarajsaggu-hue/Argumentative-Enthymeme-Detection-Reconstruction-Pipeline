@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Surface: Argumentative Enthymeme Detection & Reconstruction</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Interactive Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* UI Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #0f172a;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Visual Diagram Components */
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--accent-light);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .diagram-node {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .diagram-arrow {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Collapsible Elements */
+        details {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.7rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Argumentative Enthymeme Detection & Reconstruction</h1>
+        <p>Interactive Architecture Specification & Pipeline Dashboard</p>
+    </header>
+
+    <div class="container">
+        <!-- Tab Navigation Bar -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'overview')">System Overview</button>
+            <button class="tab-btn" onclick="switchTab(event, 'pipeline')">Data Pipeline</button>
+            <button class="tab-btn" onclick="switchTab(event, 'structure')">Repository Layout</button>
+            <button class="tab-btn" onclick="switchTab(event, 'benchmarks')">Benchmarks & Metrics</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div id="overview" class="tab-content active">
+            <div class="card">
+                <h2>Project Motivation</h2>
+                <p>Enthymemes are arguments containing missing or unstated logical premises left implicit by the speaker. This project implements an end-to-end NLP workflow to automatically isolate these gaps, detect implicit constraints, and reconstruct explicit argumentative bridges using deep learning auto-encoders.</p>
+            </div>
+            <div class="card">
+                <h2>Core Highlights</h2>
+                <ul>
+                    <li><strong>Detection Layer:</strong> Employs structured heuristics to map syntax abnormalities where logical links vanish.</li>
+                    <li><strong>Generative Core:</strong> Built using a fine-tuned fine-grained BART architecture configured to generate missing underlying structural assertions.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab 2: Pipeline -->
+        <div id="pipeline" class="tab-content">
+            <div class="card">
+                <h2>Interactive Architecture Flow</h2>
+                <p>Click through tabs or expand steps below to evaluate how data behaves at each stage of execution.</p>
+                
+                <div class="diagram-container">
+                    <div class="diagram-node">Raw Text Input <br><small style="font-weight:normal;color:var(--text-muted)">Incomplete Argument</small></div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node" style="border-color: #f59e0b;">Detection Heuristics <br><small style="font-weight:normal;color:var(--text-muted)">Isolating Logical Gaps</small></div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node" style="border-color: var(--success);">BART Auto-Encoder Core <br><small style="font-weight:normal;color:var(--text-muted)">Premise Reconstruction Generation</small></div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node">Explicit Argumentative Output <br><small style="font-weight:normal;color:var(--text-muted)">Completed Structural Claims</small></div>
+                </div>
+
+                <details>
+                    <summary>Step 1: Detection Sub-System Details</summary>
+                    <p>Scans sequence embeddings for conceptual drift or dangling claims that are not grounded by standard premise connectives.</p>
+                </details>
+                <details>
+                    <summary>Step 2: Sequence Reconstruction (BART) Details</summary>
+                    <p>The sequence-to-sequence transformer leverages structural encoder self-attention weights to generate target premise strings completing the enthymeme bridge.</p>
+                </details>
+            </div>
+        </div>
+
+        <!-- Tab 3: Repository Layout -->
+        <div id="structure" class="tab-content">
+            <div class="card">
+                <h2>Interactive File Tree Explorer</h2>
+                <p>Expand specific subfolders below to trace the module implementation blueprints without scanning vast repository directory files.</p>
+                
+                <details>
+                    <summary>📁 src / (Core Implementation Modules)</summary>
+                    <pre>
+├── detection_heuristics.py  # Algorithms evaluating syntax gaps
+├── model_pipeline.py        # Pipeline training configurations
+└── reconstructor_node.py    # Generative BART inference loop execution</pre>
+                </details>
+
+                <details>
+                    <summary>📁 evaluation / (Performance Validation)</summary>
+                    <pre>
+├── benchmarks.json          # Raw token scoring metric targets
+└── quantitative_plots.py    # Analytical data script generation</pre>
+                </details>
+            </div>
+        </div>
+
+        <!-- Tab 4: Benchmarks -->
+        <div id="benchmarks" class="tab-content">
+            <div class="card">
+                <h2>Quantitative Performance Matrix</h2>
+                <p>The model pipeline parameters were explicitly benchmarked across key sequence generation metrics:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Evaluation Vector</th>
+                            <th>Metric Scored</th>
+                            <th>Status Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Premise Recovery Precision</td>
+                            <td>ROUGE-L Score</td>
+                            <td><span style="color:var(--success); font-weight:bold;">✓ Passed Optimization</span></td>
+                        </tr>
+                        <tr>
+                            <td>Structural Semantic Validity</td>
+                            <td>BLEU Variant Alignment</td>
+                            <td><span style="color:var(--success); font-weight:bold;">✓ Balanced Validation</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(evt, tabId) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Python environments and caches
+__pycache__/
+*.py[cod]
+*$py.class
+venv_final_2026/
+.venv/
+env/
+
+# Slurm output logs (keep the repository clean)
+logs/*.out
+logs/*.err
+
+# Data and Models (Prevent uploading massive files to Git)
+data/
+models/
+*.csv
+*.safetensors
+*.bin
+*.pt
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE files
+.vscode/
+.idea/

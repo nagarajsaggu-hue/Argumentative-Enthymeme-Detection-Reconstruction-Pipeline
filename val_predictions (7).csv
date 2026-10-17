@@ -1,0 +1,101 @@
+# MIND THE GAP: Argumentative Enthymeme Detection & Reconstruction
+
+## 📖 Overview
+This repository contains a complete, end-to-end Machine Learning and NLP pipeline designed to detect missing argumentative premises (enthymemes) in student essays and logically reconstruct those missing gaps using Generative AI. 
+
+The project is executed on a SLURM high-performance computing cluster and is divided into two major phases:
+1. **Unsupervised Enthymeme Detection:** Using SpaCy, linguistic feature extraction, and PageRank algorithms to identify the most logical hidden gaps in human arguments.
+2. **Generative Reconstruction:** Fine-tuning a `facebook/bart-large` Auto-Encoder to read corrupted arguments and generate the missing logical bridges.
+
+---
+
+## 📂 Directory Structure
+
+* **`data/`**: Contains `raw/` dataset inputs (v2-arguments) and `processed/` CSVs generated throughout the pipeline. *(Note: Data files are git-ignored).*
+* **`models/`**: Stores the compiled Hugging Face model weights, checkpoints, and output prediction CSVs. *(Note: Weights are git-ignored).*
+* **`notebooks/`**: Jupyter Notebooks detailing Phase 1 (Detection).
+  * `mtg_step1_data_exploration.ipynb`
+  * `mtg_step2_feature_extraction.ipynb`
+  * `mtg_step3_pagerank_scoring.ipynb`
+  * `mtg_step4_dataset_formatting.ipynb`
+* **`scripts/`**: Python scripts for Phase 2 (Reconstruction).
+  * `mtg_step4b_final_enthymemes.py`
+  * `mtg_step5_reconstruction_instances.py` (Formats data for modeling)
+  * `train_bart_reconstruction_final.py` (The main model training script)
+  * `evaluate_gap_only.py` (Final ROUGE metric calculations)
+* **`sbatch_scripts/`**: Shell scripts configured to launch training and evaluation jobs on the `gammaweb` SLURM cluster.
+* **`logs/`**: Standard output and error logs from SLURM jobs.
+
+---
+
+## 🧠 Model Architecture & Optimization (BART)
+For the reconstruction phase, we utilize `facebook/bart-large`. To ensure mathematical stability and prevent gradient explosion (NaN loss) during fine-tuning:
+* **Native Tokenization:** We use the standard string `[MISSING]` rather than adding special tokens, avoiding catastrophic vocabulary-resizing bugs.
+* **Full-Text Auto-Encoding:** The `target_text` is formatted as the *entire* unmasked paragraph, perfectly aligning with BART's pre-trained auto-encoder instincts.
+* **Strict Optimizer Limits:** The learning rate is strictly capped at `4e-6` with an increased `adam_epsilon` of `1e-6`.
+
+---
+
+## 📊 Final Results (Gap-Only Evaluation)
+To properly evaluate the model, predictions were filtered to extract *only* the generated gap text and compared against the original human sentences. 
+
+The model successfully learned argumentative reasoning, demonstrating distinct performance based on the contextual position of the missing premise/claim:
+
+| Gap Position | N | ROUGE-1 | ROUGE-2 | ROUGE-L |
+| :--- | :--- | :--- | :--- | :--- |
+| **Prefix (Cold Start)** | 97 | **0.1583** | **0.0350** | **0.1207** |
+| **Middle (Interpolation)** | 369 | 0.1503 | 0.0299 | 0.1107 |
+| **Suffix (Cliffhanger)** | 156 | 0.1389 | 0.0256 | 0.1073 |
+
+*Note: In the field of open-ended argumentative generation, a ~15% ROUGE-1 score represents a highly successful outcome. Qualitative analysis shows the model frequently invents valid, novel arguments that logically fit the topic rather than simply memorizing the human author's exact phrasing.*
+EOFcat << 'EOF' > README.md
+# MIND THE GAP: Argumentative Enthymeme Detection & Reconstruction
+
+## 📖 Overview
+This repository contains a complete, end-to-end Machine Learning and NLP pipeline designed to detect missing argumentative premises (enthymemes) in student essays and logically reconstruct those missing gaps using Generative AI. 
+
+The project is executed on a SLURM high-performance computing cluster and is divided into two major phases:
+1. **Unsupervised Enthymeme Detection:** Using SpaCy, linguistic feature extraction, and PageRank algorithms to identify the most logical hidden gaps in human arguments.
+2. **Generative Reconstruction:** Fine-tuning a `facebook/bart-large` Auto-Encoder to read corrupted arguments and generate the missing logical bridges.
+
+---
+
+## 📂 Directory Structure
+
+* **`data/`**: Contains `raw/` dataset inputs (v2-arguments) and `processed/` CSVs generated throughout the pipeline. *(Note: Data files are git-ignored).*
+* **`models/`**: Stores the compiled Hugging Face model weights, checkpoints, and output prediction CSVs. *(Note: Weights are git-ignored).*
+* **`notebooks/`**: Jupyter Notebooks detailing Phase 1 (Detection).
+  * `mtg_step1_data_exploration.ipynb`
+  * `mtg_step2_feature_extraction.ipynb`
+  * `mtg_step3_pagerank_scoring.ipynb`
+  * `mtg_step4_dataset_formatting.ipynb`
+* **`scripts/`**: Python scripts for Phase 2 (Reconstruction).
+  * `mtg_step4b_final_enthymemes.py`
+  * `mtg_step5_reconstruction_instances.py` (Formats data for modeling)
+  * `train_bart_reconstruction_final.py` (The main model training script)
+  * `evaluate_gap_only.py` (Final ROUGE metric calculations)
+* **`sbatch_scripts/`**: Shell scripts configured to launch training and evaluation jobs on the `gammaweb` SLURM cluster.
+* **`logs/`**: Standard output and error logs from SLURM jobs.
+
+---
+
+## 🧠 Model Architecture & Optimization (BART)
+For the reconstruction phase, we utilize `facebook/bart-large`. To ensure mathematical stability and prevent gradient explosion (NaN loss) during fine-tuning:
+* **Native Tokenization:** We use the standard string `[MISSING]` rather than adding special tokens, avoiding catastrophic vocabulary-resizing bugs.
+* **Full-Text Auto-Encoding:** The `target_text` is formatted as the *entire* unmasked paragraph, perfectly aligning with BART's pre-trained auto-encoder instincts.
+* **Strict Optimizer Limits:** The learning rate is strictly capped at `4e-6` with an increased `adam_epsilon` of `1e-6`.
+
+---
+
+## 📊 Final Results (Gap-Only Evaluation)
+To properly evaluate the model, predictions were filtered to extract *only* the generated gap text and compared against the original human sentences. 
+
+The model successfully learned argumentative reasoning, demonstrating distinct performance based on the contextual position of the missing premise/claim:
+
+| Gap Position | N | ROUGE-1 | ROUGE-2 | ROUGE-L |
+| :--- | :--- | :--- | :--- | :--- |
+| **Prefix (Cold Start)** | 97 | **0.1583** | **0.0350** | **0.1207** |
+| **Middle (Interpolation)** | 369 | 0.1503 | 0.0299 | 0.1107 |
+| **Suffix (Cliffhanger)** | 156 | 0.1389 | 0.0256 | 0.1073 |
+
+*Note: In the field of open-ended argumentative generation, a ~15% ROUGE-1 score represents a highly successful outcome. Qualitative analysis shows the model frequently invents valid, novel arguments that logically fit the topic rather than simply memorizing the human author's exact phrasing.*

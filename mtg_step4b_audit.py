@@ -1,0 +1,7 @@
+pandas>=1.5.0
+torch>=2.0.0
+transformers>=4.30.0
+scikit-learn>=1.2.0
+numpy>=1.23.0
+matplotlib>=3.5.0
+seaborn>=0.12.0
